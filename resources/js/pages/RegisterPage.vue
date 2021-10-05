@@ -8,14 +8,14 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="loginEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="loginEmail">
+                        <input type="email" class="form-control" id="loginEmail" v-model="email">
                     </div>
                     <div class="mb-3">
                         <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="loginPassword">
+                        <input type="password" class="form-control" id="loginPassword" v-model="password">
                     </div>
                     <div class="d-flex flex-column align-items-center">
-                        <button class="btn btn-primary mb-3">Register</button>
+                        <button class="btn btn-primary mb-3" @click="register">Register</button>
                         <router-link :to="{name: 'login'}">Already have an account?</router-link>
                     </div>
                 </div>
@@ -25,11 +25,28 @@
 </template>
 
 <script>
+import {post} from '../api.js'
 export default {
-    /**
-     * Todo: Implement Registration Functionality.
-     * You should redirect the user to the Todo Dashboard
-     * after they register.
-     */
+    data () {
+        return {
+            email: '',
+            password: ''
+        }
+    },
+    methods: {
+        async register () {
+            let result = await post('/api/register', {email: this.email, password: this.password})
+
+            if (!result.token) {
+                return false
+            }
+
+            // save auth token in local storage
+            window.localStorage.setItem('authToken', result.token)
+
+            // redirect the user to the Todo Dashboard
+            this.$router.push('/auth/todo-dashboard')
+        }
+    }
 }
 </script>

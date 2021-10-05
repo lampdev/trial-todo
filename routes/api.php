@@ -22,6 +22,6 @@ Route::post('register', [AuthController::class, 'register']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('todos', [TodoController::class, 'index']);
     Route::post('todos', [TodoController::class, 'store']);
-    Route::put('todos/{todoId}', [TodoController::class, 'update']);
-    Route::delete('todos/{todoId}', [TodoController::class, 'destroy']);
+    Route::put('todos/{toDo}', [TodoController::class, 'update']);
+    Route::delete('todos/{toDo}', [TodoController::class, 'destroy']);
 });
